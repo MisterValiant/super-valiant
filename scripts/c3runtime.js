@@ -5046,53 +5046,56 @@ self.C3_GetObjectRefTable = function () {
 		C3.Behaviors.Bullet,
 		C3.Behaviors.jumpthru,
 		C3.Plugins.Button,
-		C3.Plugins.System.Cnds.OnLayoutStart,
-		C3.Behaviors.Pin.Acts.PinByProperties,
-		C3.Plugins.Sprite.Acts.SetInstanceVar,
-		C3.Plugins.Text.Acts.SetText,
+		C3.Plugins.System.Cnds.EveryTick,
 		C3.Plugins.System.Cnds.CompareVar,
+		C3.Behaviors.Platform.Acts.SetIgnoreInput,
+		C3.Behaviors.Platform.Acts.SetVectorY,
+		C3.Plugins.Sprite.Acts.SetAnim,
+		C3.Plugins.Sprite.Acts.SetCollisions,
+		C3.Plugins.System.Acts.Wait,
+		C3.Plugins.System.Acts.GoToLayout,
+		C3.Plugins.System.Acts.SetVar,
+		C3.Plugins.System.Cnds.OnLayoutStart,
+		C3.Plugins.Sprite.Acts.SetInstanceVar,
+		C3.Plugins.Keyboard.Cnds.OnKey,
+		C3.Plugins.Sprite.Cnds.IsOverlapping,
+		C3.Plugins.Sprite.Acts.Destroy,
+		C3.Plugins.Button.Cnds.OnClicked,
+		C3.Plugins.Sprite.Cnds.OnCollision,
 		C3.Plugins.Sprite.Acts.SetPos,
 		C3.Plugins.Sprite.Exps.X,
 		C3.Plugins.Sprite.Exps.Y,
-		C3.Plugins.System.Acts.SetVar,
+		C3.Behaviors.Flash.Acts.Flash,
+		C3.Plugins.Text.Acts.SetText,
+		C3.Behaviors.Pin.Acts.PinByProperties,
+		C3.Plugins.System.Acts.RestartLayout,
 		C3.Plugins.System.Cnds.IsGroupActive,
 		C3.Plugins.Keyboard.Cnds.IsKeyDown,
 		C3.Behaviors.Platform.Cnds.IsOnFloor,
-		C3.Plugins.Sprite.Acts.SetAnim,
 		C3.Plugins.Sprite.Acts.SetMirrored,
 		C3.Behaviors.Platform.Cnds.IsMoving,
 		C3.Behaviors.Platform.Cnds.IsJumping,
 		C3.Behaviors.Platform.Acts.SetMaxSpeed,
 		C3.Plugins.System.Cnds.Else,
-		C3.Plugins.System.Cnds.EveryTick,
 		C3.Plugins.System.Cnds.Compare,
 		C3.Behaviors.Platform.Exps.MaxSpeed,
 		C3.Behaviors.Platform.Acts.SetJumpStrength,
-		C3.Plugins.Sprite.Cnds.OnCollision,
 		C3.Plugins.Sprite.Cnds.PickDistance,
 		C3.Plugins.Sprite.Acts.Spawn,
 		C3.Plugins.Particles.Acts.SetAngle,
-		C3.Plugins.Sprite.Acts.Destroy,
 		C3.Plugins.Sprite.Acts.SetAnimFrame,
 		C3.Behaviors.lunarray_LiteTween.Acts.Start,
-		C3.Plugins.System.Acts.Wait,
 		C3.Behaviors.lunarray_LiteTween.Acts.Stop,
 		C3.Plugins.System.Acts.AddVar,
-		C3.Behaviors.Platform.Acts.SetIgnoreInput,
-		C3.Plugins.System.Acts.GoToLayout,
 		C3.Plugins.Sprite.Cnds.CompareInstanceVar,
 		C3.Behaviors.Platform.Acts.SimulateControl,
 		C3.Plugins.Sprite.Acts.SetTowardPosition,
 		C3.Behaviors.Platform.Cnds.IsFalling,
-		C3.Plugins.Sprite.Acts.SetCollisions,
+		C3.Plugins.Sprite.Cnds.CompareY,
 		C3.Behaviors.Platform.Acts.SetEnabled,
 		C3.Behaviors.Fade.Acts.StartFade,
-		C3.Behaviors.Platform.Acts.SetVectorY,
-		C3.Behaviors.Flash.Acts.Flash,
 		C3.Plugins.System.Acts.SubVar,
-		C3.Plugins.Keyboard.Cnds.OnKey,
-		C3.Plugins.Sprite.Cnds.IsOverlapping,
-		C3.Plugins.Button.Cnds.OnClicked
+		C3.Behaviors.Platform.Acts.SetVectorX
 	];
 };
 self.C3_JsPropNameTable = [
@@ -5139,7 +5142,7 @@ self.C3_JsPropNameTable = [
 	{water: 0},
 	{trigger_water: 0},
 	{back_ground: 0},
-	{sky: 0},
+	{water_top: 0},
 	{health_1: 0},
 	{text_health: 0},
 	{Jumpthru: 0},
@@ -5159,9 +5162,22 @@ self.C3_JsPropNameTable = [
 	{btn_play: 0},
 	{btn_level_1: 0},
 	{btn_level_2: 0},
+	{sky: 0},
+	{trigger_water_level2: 0},
+	{btn_restart: 0},
+	{btn_menu: 0},
+	{stripe: 0},
+	{golf_static: 0},
+	{trap_text: 0},
+	{tutorial_text: 0},
+	{under_text: 0},
+	{trigger_tp_trap2: 0},
 	{score: 0},
 	{bonuslvl: 0},
-	{health_lvl: 0}
+	{health_lvl: 0},
+	{death: 0},
+	{teleportation: 0},
+	{invult: 0}
 ];
 }
 
@@ -5262,6 +5278,26 @@ function or(l, r)
 }
 
 self.C3_ExpressionFuncs = [
+		() => "dead",
+		() => -490,
+		() => 3,
+		() => "alive",
+		() => 5,
+		() => 0,
+		() => "overworld",
+		() => 1,
+		() => 50,
+		() => 300,
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpObject();
+		},
+		() => "inside",
+		() => 0.1,
+		() => 3.5,
+		() => "",
+		() => 2.5,
+		() => "outside",
 		() => "underground",
 		p => {
 			const v0 = p._GetNode(0).GetVar();
@@ -5271,14 +5307,11 @@ self.C3_ExpressionFuncs = [
 			const v0 = p._GetNode(0).GetVar();
 			return () => v0.GetValue();
 		},
-		() => 1,
+		() => "no",
 		() => 2300,
 		() => 235,
-		p => {
-			const n0 = p._GetNode(0);
-			return () => n0.ExpObject();
-		},
-		() => 0,
+		() => 3600,
+		() => 100,
 		() => "Player",
 		() => "Run",
 		() => "run",
@@ -5299,17 +5332,18 @@ self.C3_ExpressionFuncs = [
 		() => "collide",
 		() => 270,
 		() => 0.3,
-		() => 3,
-		() => 50,
-		() => 300,
-		() => 5,
 		() => "NPCs",
 		() => "Enemies",
+		() => "Environment",
+		p => {
+			const n0 = p._GetNode(0);
+			return () => (n0.ExpObject() - 5);
+		},
 		() => "die",
 		() => -650,
-		() => 0.1,
-		() => "Environment",
-		() => "overworld"
+		() => "yes",
+		() => -400,
+		() => 400
 ];
 
 
